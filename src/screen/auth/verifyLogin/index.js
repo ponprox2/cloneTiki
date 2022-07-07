@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 function LoginScreen({navigation}) {
   const dispatch = useDispatch();
   const [password, setPassword] = useState('');
+  const [errorPassword, setErrorPassword] = useState(false);
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   const phoneNumber = useSelector(state => state.personalInfo.phone);
@@ -31,6 +32,7 @@ function LoginScreen({navigation}) {
       storeData();
       navigation.navigate('BottomNav');
     }
+    setErrorPassword(true);
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -40,7 +42,8 @@ function LoginScreen({navigation}) {
         <Text style={styles.title1}>
           Vui lòng nhập mật khẩu Tiki cho số điện thoại
         </Text>
-        <Text style={styles.title1}>0345953931</Text>
+
+        <Text style={styles.title1}>{phoneNumber}</Text>
 
         <TextInput
           //   keyboardType="numeric"
@@ -51,6 +54,10 @@ function LoginScreen({navigation}) {
           onChangeText={setPassword}
           value={password}
         />
+        {errorPassword && (
+          <Text style={styles.title2}>Vui lòng nhập lại mật khẩu!</Text>
+        )}
+
         <TouchableOpacity style={[styles.button]} onPress={handleNext}>
           <Text style={styles.text}>Đăng nhập</Text>
         </TouchableOpacity>
@@ -146,5 +153,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   //   logo: {},
+  title2: {
+    color: 'red',
+    fontWeight: '500',
+    fontSize: '16',
+  },
 });
 export default LoginScreen;
